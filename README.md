@@ -137,6 +137,12 @@ private void attachDatabaseReadListener() {
 ````
 * In the onCreate(), call attachDatabaseReadListener().
 
+* You should now be able to send messages and see them appear in Firebase Console as well as displayed in your app.
+### ~~~~~~~~~~~~~~~` Make sure this works before going further ~~~~~~~~~~~~~~~~ ###
+
+## Adding Authentication ##
+
+
 ````
 private void detachDatabaseReadListener() {
     if(mChildEventListner != null) {
