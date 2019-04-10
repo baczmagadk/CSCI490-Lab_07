@@ -179,6 +179,9 @@ In onCreate() directly under where you instantiate the Firebase Database, instan
 ````
 mFirebaseAuth = FirebaseAuth.getInstance();
 ````
+At the end of onCreate() instantiate the AuthStateListner. As with other interfaces you have implemented on the fly, let the IDE do the work by auto completing.
+* mAuthStateListener = new Auth.... ***press Enter***.
+
 
 
 ````
