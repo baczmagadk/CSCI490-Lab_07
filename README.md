@@ -201,7 +201,16 @@ FirebaseUser user = firebaseAuth.getCurrentUser();
              RC_SIGN_IN);
  }
  ````
+ * Add the RC_SIGN_IN constant for startActivityForResult() method.
+ ````
+ public static final int RC_SIGN_IN = 1;
+ ````
+ * Add a Toast message in the ***if*** block 
+ ````
+ Toast.makeText(getApplicationContext(), "Signed in!", Toast.LENGTH_SHORT).show();
+ ````
  
+* Test the app to ensure you can at least log in
  
 
 
