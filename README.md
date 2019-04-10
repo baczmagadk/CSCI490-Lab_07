@@ -152,6 +152,33 @@ private void attachDatabaseReadListener() {
   }
 }
 ````
+* Firebase simplifies the authentication steps by already providing different implementation depending on which types you choose to allow. These could be email/password, Facebook, Twitter, Google, Github, amoung others. FirebaseUI is a client that Google has created to seemlessly incorporate any that you choose.
+* ***In Firebase Console*** click on the 'Authentication' tab.
+* Click 'Set up sign-in method'.
+* Click on and enable 'Email/password' and 'Google'.
+* Navigate a browser tab to [Firebase Auth Doc](https://firebase.google.com/docs/auth/).
+### Basic steps to add authenticating to our app ###
+1. Add dependencies.
+2. Add AuthStateListener.
+3. Send unauthenticated users to authentication flow.
+4. Sign in setup and sign out teardown.
+
+* ***In Android Studio*** Add the following dependencies to you app/build.gradle file:
+````
+implementation 'com.google.firebase:firebase-auth:16.0.1'
+implementation 'com.google.android.gms:play-services-auth:15.0.1'
+````
+Once the libraries are added, we are ready to start coding. The app will now have two states, signed in and signed out. We need a way to determine which state our app is in. An ***AuthStateListener*** reacts to auth state changes.
+
+* Add a FirebaseAuth and FirebaseAuth.AuthStateListener as member variables to MainActivity.java.
+````
+private FirebaseAuth mFirebaseAuth;
+private FirebaseAuth.AuthStateListener mAuthStateListener;
+````
+In onCreate() directly under where you instantiate the Firebase Database, instantiate the FirebaseAuth object.
+````
+mFirebaseAuth = FirebaseAuth.getInstance();
+````
 
 
 ````
