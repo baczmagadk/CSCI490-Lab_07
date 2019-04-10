@@ -181,6 +181,28 @@ mFirebaseAuth = FirebaseAuth.getInstance();
 ````
 At the end of onCreate() instantiate the AuthStateListner. As with other interfaces you have implemented on the fly, let the IDE do the work by auto completing.
 * mAuthStateListener = new Auth.... ***press Enter***.
+* @Override onPause() and onResume() methods.
+* on mFirebaseAuth object add the mAuthStateListener in the onResume() and remove the listener in the onPause().
+* We need to add some functionality to the AuthStateListener. In the ***onAuthStateChanged()*** 
+````
+FirebaseUser user = firebaseAuth.getCurrentUser();
+ if(user != null) {
+     // user is signed in
+     onSignedInInitialize(user.getDisplayName());
+
+ } else {
+     // user is signed out
+     startActivityForResult(
+             AuthUI.getInstance()
+                     .createSignInIntentBuilder()
+                     .setAvailableProviders(Arrays.asList(
+                             new AuthUI.IdpConfig.GoogleBuilder().build()))
+                     .build(),
+             RC_SIGN_IN);
+ }
+ ````
+ 
+ 
 
 
 
