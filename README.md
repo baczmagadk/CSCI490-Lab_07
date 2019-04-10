@@ -141,6 +141,17 @@ private void attachDatabaseReadListener() {
 ### ~~~~~~~~~~~~~~~` Make sure this works before going further ~~~~~~~~~~~~~~~~ ###
 
 ## Adding Authentication ##
+* In the Firebase Console, go back to the 'Rules' tab of the Realtime Database.
+* Change the rule back to the original setting
+````
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+````
 
 
 ````
