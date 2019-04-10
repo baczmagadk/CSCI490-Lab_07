@@ -167,6 +167,8 @@ private void attachDatabaseReadListener() {
 ````
 implementation 'com.google.firebase:firebase-auth:16.0.1'
 implementation 'com.google.android.gms:play-services-auth:15.0.1'
+implementation 'com.firebaseui:firebase-ui-auth:3.2.2'
+
 ````
 Once the libraries are added, we are ready to start coding. The app will now have two states, signed in and signed out. We need a way to determine which state our app is in. An ***AuthStateListener*** reacts to auth state changes.
 
@@ -188,7 +190,6 @@ At the end of onCreate() instantiate the AuthStateListner. As with other interfa
 FirebaseUser user = firebaseAuth.getCurrentUser();
  if(user != null) {
      // user is signed in
-     onSignedInInitialize(user.getDisplayName());
 
  } else {
      // user is signed out
