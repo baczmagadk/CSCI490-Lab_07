@@ -163,11 +163,29 @@ private void attachDatabaseReadListener() {
 3. Send unauthenticated users to authentication flow.
 4. Sign in setup and sign out teardown.
 
-* ***In Android Studio*** Add the following dependencies to you app/build.gradle file:
+* ***In Android Studio*** Change to the dependencies in your app/build.gradle file:
 ````
-implementation 'com.google.firebase:firebase-auth:16.0.1'
-implementation 'com.google.android.gms:play-services-auth:15.0.1'
+implementation fileTree(dir: 'libs', include: ['*.jar'])
+implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    
+implementation 'com.android.support:design:27.0.2'
+    
+implementation 'com.android.support:appcompat-v7:27.0.2'
+implementation 'com.android.support:multidex:1.0.1'
+
+implementation 'com.google.firebase:firebase-core:11.8.0'
+implementation 'com.google.firebase:firebase-database:11.8.0'
+implementation 'com.google.firebase:firebase-auth:11.8.0'
+implementation 'com.google.firebase:firebase-storage:11.8.0'
+
 implementation 'com.firebaseui:firebase-ui-auth:3.2.2'
+
+// Displaying images
+implementation 'com.github.bumptech.glide:glide:3.6.1'
+
+testImplementation 'junit:junit:4.12'
+androidTestImplementation 'com.android.support.test:runner:1.0.2'
+androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 ````
 Once the libraries are added, we are ready to start coding. The app will now have two states, signed in and signed out. We need a way to determine which state our app is in. An ***AuthStateListener*** reacts to auth state changes.
@@ -212,9 +230,21 @@ FirebaseUser user = firebaseAuth.getCurrentUser();
  ````
  
 * Test the app to ensure you can at least log in
- 
+* Create two private void methods ***onSignedInInitialize(String username)*** and ***onSignedOutCleanup()***
+````
+private void onSignedInInitialize(String username) {
+        
+}
+    
+private void onSignedOutCleanup() {
+        
+}
 
-
+````
+* Inside the ***onSignedInIntialize()*** method, set mUsername to the username that is passed in.
+* Move the line that calls ***attachDatabaseReadListener()*** to inside ***onSignedInIntialize()***
+The app now attaches the database listener after the user has authenticated. Test the app and make sure that a test message now displays who sent it.
+* Create a method to detach the DatabaseListener.
 
 ````
 private void detachDatabaseReadListener() {
@@ -225,4 +255,5 @@ private void detachDatabaseReadListener() {
     }
 }
 ````
+* Inside the ***onSignedOutCleanup()*** set mUsername to ANONYMOUS, clear the message adapter, and call the ***detachDatabaseListener()
     
