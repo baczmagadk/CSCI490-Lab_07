@@ -306,4 +306,71 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
    }
 }
 ````
-    
+## File Storage ##
+* In Firebase Console, click on the 'Storage' tab.
+* Click 'Get Started'.
+* Add a folder called ***chat_photos***
+* In Android Studio, set up the image picker
+````
+// ImagePickerButton shows an image picker to upload a image for a message
+mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
+   @Override
+   public void onClick(View view) {
+       Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+       intent.setType("image/jpeg");
+       intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+       startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+   }
+});
+````
+* Under the 'RC_SIGN_IN' int, create 'RC_PHOTO_PICKER'
+````
+private static final int RC_PHOTO_PICKER =  2; 
+````
+* Create a member variable called ***FirebaseStorage mFirebaseStorage*** and instantiate it like you did FirebaseAuth and FirebaseDatabase.
+* Create a member variable called ***StorageReference mChatPhotosStorageReference*** and instantiate it like you did the DatabaseReference but pass in the folder you created in Firebase Console.
+* Add an ***else if*** to the onActivityResult() method.
+````
+else if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK ) {
+
+}
+````
+This is where we will handle what to do after the user chooses a picture.
+The URI will come in as ***data.getData()***
+* Inside the else if block you just created, you will need three lines of code. One to get the URI, one to get a reference to the the file location we will be putting the file into, and lastly to put the file in Firebase.
+````
+Uri selectedURI = data.getData();
+            
+// Get a reference to store file in chat_photos/<filename>
+StorageReference photoReference = mChatPhotosStorageReference.child(selectedURI.getLastPathSegment());
+
+// Put file in Firebase
+photoReference.putFile(selectedURI);
+````
+Finally, we need to add a SuccessListner to the file push. This will grab the download URL and send it to the messages database and allow the image to be shown.
+* Modify the ***putFile*** as follows:
+````
+// Put file in Firebase
+photoReference.putFile(selectedURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    @Override
+    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+        FriendlyMessage message = new FriendlyMessage(null, mUsername, downloadUrl.toString());
+        mMessagesDatabaseReference.push().setValue(message);
+    }
+});
+````
+You will need to download a photo from web on virtual devices, but you can now test the functionality
+
+## Firebase Messaging ##
+* Add Firebase Messaging dependency and Sync
+````
+implementation 'com.google.firebase:firebase-messaging:17.6.0'
+````
+* Ensure app is not in Foreground.
+* In the Firebase Console, click on the ***Cloud Messaging*** tab.
+* Click on 'Send your first message'.
+* Fill in a Notification and click 'Next'
+* Target 'edu.cofc.briggs.myapplication'.
+
