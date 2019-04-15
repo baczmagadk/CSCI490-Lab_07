@@ -366,7 +366,7 @@ You will need to download a photo from web on virtual devices, but you can now t
 ## Firebase Messaging ##
 * Add Firebase Messaging dependency and Sync
 ````
-implementation 'com.google.firebase:firebase-messaging:17.6.0'
+implementation 'com.google.firebase:firebase-messaging:11.8.0'
 ````
 * Ensure app is not in Foreground.
 * In the Firebase Console, click on the ***Cloud Messaging*** tab.
