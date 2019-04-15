@@ -255,9 +255,9 @@ private void detachDatabaseReadListener() {
     }
 }
 ````
-* Inside the ***onSignedOutCleanup()*** set mUsername to ANONYMOUS, clear the message adapter, and call the ***detachDatabaseListener()***
+* Inside the ***onSignedOutCleanup()*** set mUsername to ANONYMOUS, clear the message adapter, and call the ***detachDatabaseReadListener()***
 * @Override onResume() and call ***attachDatabaseReadListener()***.
-* @Override onPause() and call ***detachDatabaseListener()***.
+* @Override onPause() and call ***detachDatabaseReadListener()***.
 ````
 @Override
 protected void onPause() {
