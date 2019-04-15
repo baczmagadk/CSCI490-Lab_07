@@ -255,5 +255,55 @@ private void detachDatabaseReadListener() {
     }
 }
 ````
-* Inside the ***onSignedOutCleanup()*** set mUsername to ANONYMOUS, clear the message adapter, and call the ***detachDatabaseListener()
+* Inside the ***onSignedOutCleanup()*** set mUsername to ANONYMOUS, clear the message adapter, and call the ***detachDatabaseListener()***
+* @Override onResume() and call ***attachDatabaseReadListener()***.
+* @Override onPause() and call ***detachDatabaseListener()***.
+````
+@Override
+protected void onPause() {
+   super.onPause();
+   if(mAuthStateListener == null) {
+      mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+   }
+   detachDatabaseReadListener();
+   mMessageAdapter.clear();
+}
+
+@Override
+protected void onResume() {
+   super.onResume();
+   mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+}
+````
+You might notice that there is a menu item for Signing out. You can write the code for this by @Overriding the ***onOptionsItemSelected(MenuItem item)*** method.
+````
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+   switch (item.getItemId()) {
+      case R.id.sign_out_menu:
+          // sign out
+          AuthUI.getInstance().signOut(this);
+          return true;
+      default:
+          return super.onOptionsItemSelected(item);
+   }
+
+}
+````
+You may notice there is a slight bug. Once the user is logged out, there is no way to back out of the app. A slightly less buggy fix for this:
+````
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+   super.onActivityResult(requestCode, resultCode, data);
+
+   if(requestCode == RC_SIGN_IN) {
+      if(resultCode == RESULT_OK) {
+          Toast.makeText(getApplicationContext(), "Signed in!", Toast.LENGTH_SHORT).show();
+      } else if(resultCode == RESULT_CANCELED) {
+          Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
+          finish();
+      }
+   }
+}
+````
     
