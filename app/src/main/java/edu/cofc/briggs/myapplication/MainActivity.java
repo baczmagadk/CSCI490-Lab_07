@@ -1,4 +1,4 @@
-package edu.cofc.myapplication;
+package edu.cofc.briggs.myapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private Button mSendButton;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
+    private ChildEventListener mChildEventListner;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private String mUsername;
 
@@ -129,5 +132,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void attachDatabaseReadListener() {
+        if(mChildEventListner == null) {
+            mChildEventListner = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    // Method that gets called whenever a message gets inserted
+                    // It is also triggered for every message that is in the database
+                    // when the listener is first attached
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    // Method that gets called when an existing message is changed
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    // Method that gets called when an existing message is deleted
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    // Method that gets called when an existing message changes position
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Method that gets called when some error occurred
+                }
+            };
+
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListner);
+        }
     }
 }
